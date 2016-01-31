@@ -2,13 +2,13 @@
 
 _Sort your element indexes on custom fields_  
 
+![Sorting on custom fields, like a champ](http://g.recordit.co/lhvfkHZj7E.gif)  
+
 ## What?
 
 The Customizable Element Index (CEI) feature in Craft 2.5+ lets users show or hide any custom field and/or metadata to the element indexes (i.e. the table listing your Entries, Categories, Assets or Users). Awesome stuff! Unfortunately though, Craft won't actually let you _sort_ elements on these values – until now.  
 
 CP Sortable Custom Columns is a tiny plugin with a heavy handed name; hotfixing this annoying issue by hacking in support for sorting on most custom fields and meta values  
-
-![Sorting on custom fields, like a champ](http://g.recordit.co/lhvfkHZj7E.gif)  
 
 ## So which FieldTypes are sortable?
 
