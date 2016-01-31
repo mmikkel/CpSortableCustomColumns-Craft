@@ -10,6 +10,8 @@ The Customizable Element Index (CEI) feature in Craft 2.5+ lets users show or hi
 
 CP Sortable Custom Columns is a tiny plugin with a heavy handed name; hotfixing this annoying issue by hacking in support for sorting on most custom fields and meta values  
 
+As a bonus, CP Sortable Custom Columns makes the element index' sortable attributes _source aware_ (out of the box, Craft displays the same attributes for all sources, regardless of their relevance to a particular source).  
+
 ## So which FieldTypes are sortable?
 
 Any FieldType (custom or built-in) of the following [attribute types](https://craftcms.com/docs/plugins/field-types#customizing-the-database-column-type) are sortable:  

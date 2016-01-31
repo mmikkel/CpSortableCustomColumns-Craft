@@ -73,36 +73,52 @@
 				$sortAttributes = $(this.SORT_ATTRIBUTES_SELECTOR),
 				attributes = [];
 
-			// Update headers and set attributes
-			var $header,
-				attribute,
-				attributeData;
+			if (this.elementIndex.viewMode === 'thumbs') {
 
-			$indexTableHeaders.each(function () {
-				$header = $(this);
-				attribute = $header.data('attribute');
-				// Hack to enable sorting by author
-				if (attribute === 'author') {
-					attribute = 'authorId';
-					$header.data('attribute', 'authorId');
-				}
-				attributeData = self.getSortableAttribute(attribute);
-				if (attributeData || $header.hasClass('ordered') || $header.hasClass('orderable')) {
-					if (attributeData && (attribute.split(':')[0] === 'field' || attribute === 'authorId') && attributeData.handle) {
-						// This is a custom, sortable header
-						attribute = attributeData.handle;
-						if (!$header.data('_cpSortColsInitialized')) {
-							$header
-								.on('click', $.proxy(self.onCustomSortableTableHeaderClick, self))
-								.data('_cpSortColsInitialized', true);
+				// For thumbs view, only display default Assets' sortable attributes
+				attributes = [
+					'title',
+					'filename',
+					'size',
+					'dateModified',
+					'dateCreated',
+					'dateUpdated'
+				];
+
+			} else {
+				
+				// Assuming table view – Update headers and set attributes
+				var $header,
+					attribute,
+					attributeData;
+
+				$indexTableHeaders.each(function () {
+					$header = $(this);
+					attribute = $header.data('attribute');
+					// Hack to enable sorting by author
+					if (attribute === 'author') {
+						attribute = 'authorId';
+						$header.data('attribute', 'authorId');
+					}
+					attributeData = self.getSortableAttribute(attribute);
+					if (attributeData || $header.hasClass('ordered') || $header.hasClass('orderable')) {
+						if (attributeData && (attribute.split(':')[0] === 'field' || attribute === 'authorId') && attributeData.handle) {
+							// This is a custom, sortable header
+							attribute = attributeData.handle;
+							if (!$header.data('_cpSortColsInitialized')) {
+								$header
+									.on('click', $.proxy(self.onCustomSortableTableHeaderClick, self))
+									.data('_cpSortColsInitialized', true);
+							}
+						}
+						attributes.push(attribute);
+						if (!$header.hasClass('ordered') || !$header.hasClass('orderable')) {
+							$header.addClass('orderable');	
 						}
 					}
-					attributes.push(attribute);
-					if (!$header.hasClass('ordered') || !$header.hasClass('orderable')) {
-						$header.addClass('orderable');	
-					}
-				}
-			});
+				});
+				
+			}
 
 			// Attempt to update dropdown sort menu
 			if ($sortAttributes.length === 0) {
@@ -114,7 +130,7 @@
 				});
 			
 			} else {
-			
+
 				var $sortAttributesItems = $sortAttributes.find('li'),
 					$sortAttributeItem,
 					attribute,
