@@ -1,4 +1,4 @@
-# CP Sortable Custom Columns v. 1.0.0 for Craft CMS
+# CP Sortable Custom Columns v. 1.0.0 for Craft CMS ![Craft 2.5](https://img.shields.io/badge/craft-2.5-red.svg?style=flat-square)
 
 _Sort your element indexes on custom fields_  
 
