@@ -1,0 +1,214 @@
+(function (window) {
+
+	if (!window.$ || !window.Craft || !window.Garnish) {
+		return false;
+	}
+
+	Craft.CpSortableCustomColumnsPlugin = {
+
+		ELEMENT_INDEX_SELECTOR : '.elementindex:first',
+		SORT_BUTTON_SELECTOR : '.sortmenubtn:first',
+		SORT_ATTRIBUTES_SELECTOR : '.menu ul.sort-attributes:first',
+		TABLE_HEADER_SELECTOR : '.elementindex .tableview .data th[data-attribute]',
+
+		init : function (sortableAttributes) 
+		{
+
+			if (!this.sortableAttributes) {
+				if (!sortableAttributes || Object.keys(sortableAttributes).length === 0) {
+					return false;
+				}
+				this.sortableAttributes = sortableAttributes;
+			}
+
+			if (!this.timestamp) {
+				this.timestamp = new Date().getTime();
+			}
+
+			if (!this.elementIndex) {
+				this.elementIndex = Craft.elementIndex||null;
+			}
+
+			// Poll for the element index
+			var self = this,
+				now = new Date().getTime();
+
+			if (!this.elementIndex) {
+				if (now < this.timestamp + 1000) { // Give it time, baby
+					Garnish.requestAnimationFrame(function () {
+						self.init();
+					});	
+				}
+				return false;
+			}
+
+			this.$sortMenuBtn = this.elementIndex.$sortMenuBtn||false;
+
+			if (!this.$sortMenuBtn || this.$sortMenuBtn.length === 0) {
+				return false;
+			}
+
+			this.$sortMenuBtn.on('click touchstart mouseenter', $.proxy(this.onSortMenuBtnClick, this));
+			Garnish.$doc.ajaxComplete($.proxy(this.onAjax, this));
+
+		},
+
+		getSortableAttribute : function (key)
+		{
+			return this.sortableAttributes.hasOwnProperty(key) ? this.sortableAttributes[key] : null;
+		},
+
+		requestUpdate : function ()
+		{
+			this.timestamp = new Date().getTime();
+			this.update();
+		},
+
+		update : function ()
+		{
+
+			var self = this,
+				now = new Date().getTime(),
+				$indexTableHeaders = $(this.TABLE_HEADER_SELECTOR),
+				$sortAttributes = $(this.SORT_ATTRIBUTES_SELECTOR),
+				attributes = [];
+
+			// Update headers and set attributes
+			var $header,
+				attribute,
+				attributeData;
+
+			$indexTableHeaders.each(function () {
+				$header = $(this);
+				attribute = $header.data('attribute');
+				// Hack to enable sorting by author
+				if (attribute === 'author') {
+					attribute = 'authorId';
+					$header.data('attribute', 'authorId');
+				}
+				attributeData = self.getSortableAttribute(attribute);
+				if (attributeData || $header.hasClass('ordered') || $header.hasClass('orderable')) {
+					if (attributeData && (attribute.split(':')[0] === 'field' || attribute === 'authorId') && attributeData.handle) {
+						// This is a custom, sortable header
+						attribute = attributeData.handle;
+						if (!$header.data('_cpSortColsInitialized')) {
+							$header
+								.on('click', $.proxy(self.onCustomSortableTableHeaderClick, self))
+								.data('_cpSortColsInitialized', true);
+						}
+					}
+					attributes.push(attribute);
+					if (!$header.hasClass('ordered') || !$header.hasClass('orderable')) {
+						$header.addClass('orderable');	
+					}
+				}
+			});
+
+			// Attempt to update dropdown sort menu
+			if ($sortAttributes.length === 0) {
+			
+				Garnish.requestAnimationFrame(function () {
+					if (now < self.timestamp + 2000) {
+						self.update();
+					}
+				});
+			
+			} else {
+			
+				var $sortAttributesItems = $sortAttributes.find('li'),
+					$sortAttributeItem,
+					attribute,
+					attributeValue,
+					attributeName;
+
+				$sortAttributesItems.show().each(function () {
+					$sortAttributeItem = $(this);
+					attributeValue = $sortAttributeItem.find('a:first').data('attr');
+					if (attributeValue !== 'structure' && $.inArray(attributeValue, attributes) === -1) {
+						$sortAttributeItem.hide();
+						if ($sortAttributeItem.children('a').hasClass('sel')) {
+							self.resetSelectedSortAttribute();
+						}
+					}
+				});
+
+			}
+
+			// Set currently sorted column
+			var activeSortAttributeName = this.$sortMenuBtn.text(),
+				sortOrder = this.elementIndex.getSelectedSortDirection(),
+				$activeTableHeader = $(this.TABLE_HEADER_SELECTOR).filter(function () {
+					return $(this).text() === activeSortAttributeName;
+				});
+
+			if ($activeTableHeader && !$activeTableHeader.hasClass('ordered')) {
+				$(this.TABLE_HEADER_SELECTOR+'.ordered').removeClass('ordered');
+				$activeTableHeader.attr('class', 'ordered');
+			}
+
+			// Set correct sort order icon for the currently ordered column
+			$(this.TABLE_HEADER_SELECTOR+'.ordered').removeClass('asc desc').addClass(sortOrder);
+
+		},
+
+		resetSelectedSortAttribute : function ()
+		{
+
+			var $header = $(this.TABLE_HEADER_SELECTOR+':first'),
+				attribute = $header.attr('data-attribute');
+
+			this.elementIndex.setSortAttribute(attribute);
+			this.elementIndex.storeSortAttributeAndDirection();
+			this.elementIndex.updateElements();
+			this.elementIndex.setIndexAvailable();
+
+		},
+
+		onAjax : function ()
+		{
+			var self = this;
+			Garnish.requestAnimationFrame(function () {
+				self.requestUpdate();
+			});
+		},
+
+		onSortMenuBtnClick : function (e)
+		{
+			this.requestUpdate();
+		},
+
+		onCustomSortableTableHeaderClick : function (e)
+		{
+			
+			var $header = $(e.target),
+				isOrdered = $header.hasClass('ordered');
+
+			if (isOrdered) {
+				
+				var selectedSortDir = this.elementIndex.getSelectedSortDirection(),
+					newSortDir = newSortDir = (selectedSortDir == 'asc' ? 'desc' : 'asc');
+				$header.removeClass(selectedSortDir).addClass(newSortDir);
+				
+				this.elementIndex.setSortDirection(newSortDir);
+				this.elementIndex.storeSortAttributeAndDirection();
+				this.elementIndex.updateElements();
+				this.elementIndex.setIndexAvailable();
+
+			} else {
+
+				var attribute = $header.attr('data-attribute'),
+					attributeData = this.getSortableAttribute(attribute),
+					attributeHandle = attributeData.handle;
+
+				this.elementIndex.setSortAttribute(attributeHandle);
+				this.elementIndex.storeSortAttributeAndDirection();
+				this.elementIndex.updateElements();
+				this.elementIndex.setIndexAvailable();
+
+			}
+
+		}
+
+	};
+
+}(window));
