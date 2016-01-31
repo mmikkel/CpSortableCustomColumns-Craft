@@ -14,8 +14,8 @@
 class CpSortColsPlugin extends BasePlugin
 {
 
-    protected   $_version = '1.0.0',
-                $_schemaVersion = null,
+    protected   $_version = '1.0.1',
+                $_schemaVersion = '1.0',
                 $_require = '2.5',
                 $_pluginName = 'CP Sortable Custom Columns',
                 $_pluginUrl = 'https://github.com/mmikkel/CpSortableCustomColumns-Craft',
@@ -167,9 +167,13 @@ class CpSortColsPlugin extends BasePlugin
 
             foreach ($allCustomFields as $field) {
 
-                $fieldTypeContentAttribute = $field->fieldType->defineContentAttribute();
+                if (!isset($field->fieldType) || !$field->fieldType || !method_exists($field->fieldType, 'defineContentAttribute')) {
+                    continue;
+                }
 
-                if (is_array($fieldTypeContentAttribute)) {
+                $fieldTypeContentAttribute = $field->fieldType->defineContentAttribute() ?: null;
+
+                if ($fieldTypeContentAttribute && is_array($fieldTypeContentAttribute)) {
                     $fieldTypeContentAttribute = array_shift($fieldTypeContentAttribute);
                 }
 

@@ -1,4 +1,4 @@
-# CP Sortable Custom Columns v. 1.0.0 for Craft CMS ![Craft 2.5](https://img.shields.io/badge/craft-2.5-red.svg?style=flat-square)
+# CP Sortable Custom Columns v. 1.0.1 for Craft CMS ![Craft 2.5](https://img.shields.io/badge/craft-2.5-red.svg?style=flat-square)
 
 _Sort your element indexes on custom fields_  
 
@@ -42,6 +42,10 @@ Please report any bugs, feature requests or other issues [here](https://github.c
 **Pull requests are extremely welcome**  
 
 ### Changelog
+
+#### 1.0.1 (01.31.2016)
+
+* Fixes an issue with deactivated/uninstalled FieldTypes (thanks @carlcs, you're a champ!)
 
 #### 1.0.0 (01.31.2016)
 
