@@ -6,11 +6,18 @@ _Sort your element indexes on custom fields_
 
 ## What?
 
-The Customizable Element Index (CEI) feature in Craft 2.5+ lets users show or hide any custom field and/or metadata to the element indexes (i.e. the table listing your Entries, Categories, Assets or Users). Awesome stuff! Unfortunately though, Craft won't actually let you _sort_ elements on these values – until now.  
+The Customizable Element Index (CEI) feature in Craft 2.5+ lets users show or hide any custom field and/or metadata to the element indexes (i.e. the table listing your Entries, Categories, Assets or Users). Awesome stuff! Unfortunately though, Craft won't actually let you _sort_ elements on the columns you add – unless you add also add corresponding values to the sortable attributes in a custom plugin. Even then, there are issues, such as the sort menu not being _source aware_ (meaning all custom, sortable attributes added via the `modifyEntrySortableAttributes` hook will display for _all_ Sections), custom columns' headers are not clickable etc.  
 
-CP Sortable Custom Columns is a tiny plugin with a heavy handed name; hotfixing this annoying issue by hacking in support for sorting on most custom fields and meta values  
+CP Sortable Custom Columns is a tiny plugin with a heavy handed name, aiming to hotfix the above issues.  
 
-As a bonus, CP Sortable Custom Columns makes the element index' sortable attributes _source aware_ (out of the box, Craft displays the same attributes for all sources, regardless of their relevance to a particular source).  
+## Features
+
+* Automatically include any (sortable) custom field or meta value added to an element index
+* Works with attributes added via the CEI interface or in plugin hooks (such as `defineAdditionalEntryTableAttributes`)
+* Makes the headers for custom, sortable columns clickable, for easy sorting
+* Makes the sorting menu _source aware_ – any column not in the current source's element index table will be removed from the sorting menu
+
+With this plugin installed, any (sortable) custom field or meta value you add to an element index (either via hooks in a plugin, or via the CEI interface) will automatically be available for sorting.  
 
 ## So which FieldTypes are sortable?
 
@@ -21,7 +28,7 @@ Any FieldType (custom or built-in) of the following [attribute types](https://cr
 * String
 * Boolean
 
-Additionally, CP Sortable Custom Columns adds support for sorting on pretty much any meta field, such as Entry Type, Author etc.  
+Additionally, CP Sortable Custom Columns adds support for sorting on pretty much any meta field, such as Entry Type, Author, Updated Date etc.  
 
 ## Requirements
 
