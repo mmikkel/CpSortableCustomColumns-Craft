@@ -12,7 +12,7 @@ CP Sortable Custom Columns is a tiny plugin with a heavy handed name, aiming to 
 
 ## Features
 
-* Automatically include any (sortable) custom field or meta value added to an element index
+* Automatically include any (sortable) custom field or meta value added to an element index in the sort menu
 * Works with attributes added via the CEI interface or in plugin hooks (such as `defineAdditionalEntryTableAttributes`)
 * Makes the headers for custom, sortable columns clickable, for easy sorting
 * Makes the sorting menu _source aware_ – any column not in the current source's element index table will be removed from the sorting menu
