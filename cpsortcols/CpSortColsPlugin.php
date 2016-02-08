@@ -4,7 +4,7 @@
  * CP Custom Sortable Columns by Mats Mikkel Rummelhoff
  *
  * @author      Mats Mikkel Rummelhoff <http://mmikkel.no>
- * @package     DashCols
+ * @package     CpSortCols
  * @since       Craft 2.5
  * @copyright   Copyright (c) 2016, Mats Mikkel Rummelhoff
  * @license     http://opensource.org/licenses/mit-license.php MIT License
@@ -196,7 +196,6 @@ class CpSortColsPlugin extends BasePlugin
             'dateUpdated' => Craft::t('Updated Date'),
             'authorId' => Craft::t('Author'),
             'typeId' => Craft::t('Entry Type'),
-            'type' => Craft::t('Entry Type'),
             'kind' => Craft::t('Kind'),
             'width' => Craft::t('Width'),
             'height' => Craft::t('Height'),

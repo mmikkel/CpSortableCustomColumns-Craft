@@ -1,4 +1,4 @@
-# CP Sortable Custom Columns v. 1.0.1 for Craft CMS ![Craft 2.5](https://img.shields.io/badge/craft-2.5-red.svg?style=flat-square)
+# CP Sortable Custom Columns v. 1.0.2 for Craft CMS ![Craft 2.5](https://img.shields.io/badge/craft-2.5-red.svg?style=flat-square)
 
 _Easily sort your element index tables on custom fields_  
 
@@ -49,6 +49,11 @@ Please report any bugs, feature requests or other issues [here](https://github.c
 **Pull requests are extremely welcome**  
 
 ### Changelog
+
+#### 1.0.2 (02.08.2016)
+
+* [Fixed] Fixes an issue with Entry Type sorting
+* [Improved] Now displays loading spinners for custom columns
 
 #### 1.0.1 (01.31.2016)
 

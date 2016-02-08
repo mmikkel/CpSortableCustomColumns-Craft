@@ -1,5 +1,14 @@
 [
     {
+        "version": "1.0.2",
+        "downloadUrl": "https://github.com/mmikkel/CpSortableCustomColumns-Craft/archive/master.zip",
+        "date": "2016-02-08T11:00:00-08:00",
+        "notes": [
+            "[Fixed] Fixes an issue with Entry Type sorting",
+            "[Improved] Now displays loading spinners for custom columns"
+        ]
+    },
+    {
         "version": "1.0.1",
         "downloadUrl": "https://github.com/mmikkel/CpSortableCustomColumns-Craft/archive/master.zip",
         "date": "2016-01-31T11:00:00-08:00",

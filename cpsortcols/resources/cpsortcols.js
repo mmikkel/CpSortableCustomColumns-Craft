@@ -98,7 +98,17 @@
 					// Hack to enable sorting by author
 					if (attribute === 'author') {
 						attribute = 'authorId';
-						$header.data('attribute', 'authorId');
+						$header
+							.attr('data-attribute', attribute)
+							.data('attribute', attribute);
+					}
+					// Hack to enable sorting by entry type
+					if (attribute === 'type') {
+						attribute = 'typeId';
+						$header
+							.attr('data-attribute', attribute)
+							.data('attribute', attribute)
+							.on('click', $.proxy(self.onCustomSortableTableHeaderClick, self));			
 					}
 					attributeData = self.getSortableAttribute(attribute);
 					if (attributeData || $header.hasClass('ordered') || $header.hasClass('orderable')) {
@@ -199,6 +209,8 @@
 			var $header = $(e.target),
 				isOrdered = $header.hasClass('ordered');
 
+			$header.addClass('ordered loading');
+
 			if (isOrdered) {
 				
 				var selectedSortDir = this.elementIndex.getSelectedSortDirection(),
@@ -206,9 +218,7 @@
 				$header.removeClass(selectedSortDir).addClass(newSortDir);
 				
 				this.elementIndex.setSortDirection(newSortDir);
-				this.elementIndex.storeSortAttributeAndDirection();
-				this.elementIndex.updateElements();
-				this.elementIndex.setIndexAvailable();
+				
 
 			} else {
 
@@ -217,11 +227,12 @@
 					attributeHandle = attributeData.handle;
 
 				this.elementIndex.setSortAttribute(attributeHandle);
-				this.elementIndex.storeSortAttributeAndDirection();
-				this.elementIndex.updateElements();
-				this.elementIndex.setIndexAvailable();
 
 			}
+
+			this.elementIndex.storeSortAttributeAndDirection();
+			this.elementIndex.updateElements();
+			this.elementIndex.setIndexAvailable();
 
 		}
 
