@@ -14,7 +14,7 @@
 class CpSortColsPlugin extends BasePlugin
 {
 
-    protected   $_version = '1.0.1',
+    protected   $_version = '1.0.2',
                 $_schemaVersion = '1.0',
                 $_require = '2.5',
                 $_pluginName = 'CP Sortable Custom Columns',
