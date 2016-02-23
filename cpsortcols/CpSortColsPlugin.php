@@ -89,6 +89,8 @@ class CpSortColsPlugin extends BasePlugin
         }
     }
 
+    /* one for each entry type */
+    /* basic craft */
     public function modifyEntrySortableAttributes(&$attributes)
     {
         $this->modifyIndexSortableAttributes($attributes);
@@ -109,6 +111,19 @@ class CpSortColsPlugin extends BasePlugin
         $this->modifyIndexSortableAttributes($attributes);
     }
 
+    /* craft commerce */
+    public function commerce_modifyOrderSortableAttributes(&$attributes)
+    {
+        $this->modifyIndexSortableAttributes($attributes);
+    }
+
+    public function commerce_modifyProductSortableAttributes(&$attributes)
+    {
+        $this->modifyIndexSortableAttributes($attributes);
+    }
+
+    // variants doesn't have one yet.
+
     public function init()
     {
         parent::init();
@@ -120,7 +135,7 @@ class CpSortColsPlugin extends BasePlugin
         }
 
         $sortableAttributes = array();
-        
+
         foreach ($this->getSortableMetaFields() as $handle => $name) {
             $sortableAttributes[$handle] = array(
                 'handle' => $handle,
