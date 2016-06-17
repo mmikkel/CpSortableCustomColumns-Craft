@@ -1,5 +1,13 @@
 [
     {
+        "version": "1.1.1",
+        "downloadUrl": "https://github.com/mmikkel/CpSortableCustomColumns-Craft/archive/master.zip",
+        "date": "2016-06-17T11:00:00-08:00",
+        "notes": [
+            "[Fixed] Now works like it should for User element indexes"
+        ]
+    },
+    {
         "version": "1.1",
         "downloadUrl": "https://github.com/mmikkel/CpSortableCustomColumns-Craft/archive/master.zip",
         "date": "2016-02-24T11:00:00-08:00",

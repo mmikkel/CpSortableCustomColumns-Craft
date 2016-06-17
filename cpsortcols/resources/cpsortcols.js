@@ -11,7 +11,9 @@
 		SORT_ATTRIBUTES_SELECTOR : '.menu ul.sort-attributes:first',
 		TABLE_HEADER_SELECTOR : '.elementindex .tableview .data th[data-attribute]',
 
-		init : function (sortableAttributes) 
+		mappedAttributes : {},
+
+		init : function (sortableAttributes)
 		{
 
 			if (!this.sortableAttributes) {
@@ -37,7 +39,7 @@
 				if (now < this.timestamp + 1000) { // Give it time, baby
 					Garnish.requestAnimationFrame(function () {
 						self.init();
-					});	
+					});
 				}
 				return false;
 			}
@@ -86,15 +88,18 @@
 				];
 
 			} else {
-				
+
 				// Assuming table view – Update headers and set attributes
 				var $header,
 					attribute,
 					attributeData;
 
 				$indexTableHeaders.each(function () {
+
 					$header = $(this);
+
 					attribute = $header.data('attribute');
+
 					// Hack to enable sorting by author
 					if (attribute === 'author') {
 						attribute = 'authorId';
@@ -108,12 +113,16 @@
 						$header
 							.attr('data-attribute', attribute)
 							.data('attribute', attribute)
-							.on('click', $.proxy(self.onCustomSortableTableHeaderClick, self));			
+							.on('click', $.proxy(self.onCustomSortableTableHeaderClick, self));
 					}
 					attributeData = self.getSortableAttribute(attribute);
+
 					if (attributeData || $header.hasClass('ordered') || $header.hasClass('orderable')) {
 						if (attributeData && (attribute.split(':')[0] === 'field' || attribute === 'authorId') && attributeData.handle) {
 							// This is a custom, sortable header
+							self.mappedAttributes[attributeData.handle] = $.extend(attributeData, {
+								attribute : attribute
+							});
 							attribute = attributeData.handle;
 							if (!$header.data('_cpSortColsInitialized')) {
 								$header
@@ -123,29 +132,30 @@
 						}
 						attributes.push(attribute);
 						if (!$header.hasClass('ordered') || !$header.hasClass('orderable')) {
-							$header.addClass('orderable');	
+							$header.addClass('orderable');
 						}
 					}
 				});
-				
+
 			}
 
 			// Attempt to update dropdown sort menu
 			if ($sortAttributes.length === 0) {
-			
+
 				Garnish.requestAnimationFrame(function () {
 					if (now < self.timestamp + 2000) {
 						self.update();
 					}
 				});
-			
+
 			} else {
 
 				var $sortAttributesItems = $sortAttributes.find('li'),
 					$sortAttributeItem,
 					attribute,
 					attributeValue,
-					attributeName;
+					attributeName,
+					attributesInDropdown = [];
 
 				$sortAttributesItems.show().each(function () {
 					$sortAttributeItem = $(this);
@@ -156,7 +166,19 @@
 							self.resetSelectedSortAttribute();
 						}
 					}
+					attributesInDropdown.push(attributeValue);
 				});
+
+				// Add missing attributes
+				for (var i = 0; i < attributes.length; ++i) {
+					attribute = attributes[i];
+					if ($.inArray(attribute, attributesInDropdown) === -1) {
+						attribute = self.mappedAttributes[attribute] || null;
+						if (attribute && attribute.name && attribute.handle) {
+							$sortAttributes.append('<li><a data-attr="'+attribute.handle+'">'+attribute.name+'</a></li>');
+						}
+					}
+				}
 
 			}
 
@@ -205,20 +227,20 @@
 
 		onCustomSortableTableHeaderClick : function (e)
 		{
-			
+
 			var $header = $(e.target),
 				isOrdered = $header.hasClass('ordered');
 
 			$header.addClass('ordered loading');
 
 			if (isOrdered) {
-				
+
 				var selectedSortDir = this.elementIndex.getSelectedSortDirection(),
 					newSortDir = newSortDir = (selectedSortDir == 'asc' ? 'desc' : 'asc');
 				$header.removeClass(selectedSortDir).addClass(newSortDir);
-				
+
 				this.elementIndex.setSortDirection(newSortDir);
-				
+
 
 			} else {
 
