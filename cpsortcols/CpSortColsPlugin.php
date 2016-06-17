@@ -106,7 +106,7 @@ class CpSortColsPlugin extends BasePlugin
         $this->modifyIndexSortableAttributes($attributes);
     }
 
-    public function modifyUsersSortableAttributes(&$attributes)
+    public function modifyUserSortableAttributes(&$attributes)
     {
         $this->modifyIndexSortableAttributes($attributes);
     }
