@@ -1,4 +1,4 @@
-# CP Sortable Custom Columns v. 1.1.1 for Craft CMS ![Craft 2.5](https://img.shields.io/badge/craft-2.5-red.svg?style=flat-square)
+# CP Sortable Custom Columns v. 1.1.2 for Craft CMS ![Craft 2.5](https://img.shields.io/badge/craft-2.5-red.svg?style=flat-square)
 
 _Easily sort your element index tables on custom fields_
 
@@ -49,6 +49,11 @@ Please report any bugs, feature requests or other issues [here](https://github.c
 **Pull requests are extremely welcome**
 
 ### Changelog
+
+#### 1.1.2 (06.26.2017)
+
+* [Fixed] Fixes issue where CP Sortable Custom Columns would leak configuration data on login screen
+* [Fixed] Fixes issue w/ sorting in Commerce active/inactive carts view (thanks @engram-design)
 
 #### 1.1.1 (06.17.2016)
 
